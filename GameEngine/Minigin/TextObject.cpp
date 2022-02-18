@@ -1,5 +1,5 @@
 #include "MiniginPCH.h"
-#include <SDL_ttf.h>
+/*#include <SDL_ttf.h>
 #include "TextObject.h"
 #include "Renderer.h"
 #include "Font.h"
@@ -49,6 +49,6 @@ void dae::TextObject::SetText(const std::string& text)
 void dae::TextObject::SetPosition(const float x, const float y)
 {
 	m_Transform.SetPosition(x, y, 0.0f);
-}
+}*/
 
 

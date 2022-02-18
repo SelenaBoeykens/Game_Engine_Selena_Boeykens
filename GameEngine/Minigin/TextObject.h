@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-namespace dae
+/*namespace dae
 {
 	class Font;
 	class Texture2D;
@@ -28,4 +28,4 @@ namespace dae
 		std::shared_ptr<Font> m_Font;
 		std::shared_ptr<Texture2D> m_TextTexture;
 	};
-}
+}*/

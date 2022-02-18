@@ -1,6 +1,8 @@
 #include "MiniginPCH.h"
 #include "Minigin.h"
 #include <thread>
+#include <chrono>
+#include <SDL.h>
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
@@ -10,6 +12,7 @@
 #include "Scene.h"
 
 using namespace std;
+using namespace std::chrono;
 
 void PrintSDLVersion()
 {
@@ -57,18 +60,28 @@ void dae::Minigin::LoadGame() const
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 
 	auto go = std::make_shared<GameObject>();
-	go->SetTexture("background.jpg");
+	//go->AddComponent(ComponentType::render);
+	RenderComponent* renderComp = new RenderComponent();
+	renderComp->SetTexture("background.jpg");
+	go->AddComponent(renderComp);
 	scene.Add(go);
 
 	go = std::make_shared<GameObject>();
-	go->SetTexture("logo.png");
-	go->SetPosition(216, 180);
+	RenderComponent* renderComp2 = new RenderComponent();
+	renderComp2->SetTexture("logo.png");
+	renderComp2->SetPosition(216, 180);
+	go->AddComponent(renderComp2);
 	scene.Add(go);
 
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto to = std::make_shared<TextObject>("Programming 4 Assignment", font);
-	to->SetPosition(80, 20);
-	scene.Add(to);
+
+	go = std::make_shared<GameObject>();
+	RenderComponent* renderCompFPS = new RenderComponent("0 FPS", font);
+	renderCompFPS->SetPosition(0, 0);
+	go->AddComponent(renderCompFPS);
+	FPSComponent* fpsComp = new FPSComponent(renderCompFPS);
+	go->AddComponent(fpsComp);
+	scene.Add(go);
 }
 
 void dae::Minigin::Cleanup()
@@ -92,14 +105,36 @@ void dae::Minigin::Run()
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
-
+		auto lastTime = high_resolution_clock::now();
+		double lag = 0;
 		// todo: this update loop could use some work.
 		bool doContinue = true;
 		while (doContinue)
 		{
-			doContinue = input.ProcessInput();
+			/*doContinue = input.ProcessInput();
 			sceneManager.Update();
-			renderer.Render();
+			renderer.Render();*/
+			while (doContinue)
+			{
+				auto currentTime = high_resolution_clock::now();
+				const double deltaTime = duration_cast<duration<double>>(currentTime - lastTime).count();
+
+				lastTime = currentTime;
+				lag += deltaTime;
+
+				doContinue = input.ProcessInput();
+
+				while (lag >= MsPerFrame)
+				{
+					//SceneManager.FixedUpdate();
+					lag -= MsPerFrame;
+				}
+				sceneManager.Update(deltaTime);
+				renderer.Render();
+
+				auto sleepTime = duration_cast<duration<float>>(currentTime + milliseconds(MsPerFrame) - high_resolution_clock::now());
+				this_thread::sleep_for(sleepTime);
+			}
 		}
 	}
 

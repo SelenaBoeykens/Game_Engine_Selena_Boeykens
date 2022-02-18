@@ -5,3 +5,7 @@ GameEngine/.vs/Minigin/v17/.suo
 GameEngine/.vs/Minigin/v17/Browse.VC.db
 GameEngine/.vs/Minigin/v17/Browse.VC.db-shm
 GameEngine/.vs/Minigin/v17/Browse.VC.opendb
+*.dll
+GameEngine/x64/Debug/Minigin.exe
+GameEngine/x64/Debug/Minigin.pdb
+GameEngine/Minigin/x64/Debug/Minigin.pch
