@@ -20,6 +20,7 @@ namespace dae
 		void Render() const;
 
 		void SetPosition(float x, float y);
+		glm::vec3 GetPosition() const;
 
 		void SetParent(GameObject* parent);
 		GameObject* GetParent() const;
@@ -27,6 +28,8 @@ namespace dae
 		GameObject* GetChildAt(int index) const;
 		void RemoveChild(int index);
 		void AddChild(GameObject* go);
+		void BecomeChild(GameObject* Owner);
+		void StopChilding();
 
 		void SetKill();
 		bool GetNeedsKilling() const;
@@ -48,6 +51,11 @@ namespace dae
 		GameObject* m_pParent;
 		bool m_NeedsKilling = false;
 		std::vector<Message> m_Messages;
+
+		bool m_IsChild = false;
+		glm::vec3 m_Offset;
+
+		void UpdateChildren();
 	};
 }
 

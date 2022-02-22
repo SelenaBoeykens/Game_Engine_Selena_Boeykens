@@ -16,10 +16,12 @@ dae::GameObject::~GameObject()
 	}
 }
 
+
+
 void dae::GameObject::Update(double deltaTime)
 {
 	UpdateComponents(deltaTime);
-
+	UpdateChildren();
 	for (int i = 0; i < m_pChildren.size(); i++)
 	{
 		if (m_pChildren[i]->GetNeedsKilling() == true)
@@ -49,6 +51,14 @@ void dae::GameObject::UpdateComponents(double deltaTime)
 	for (BaseComponent* comp : m_pComponents)
 	{
 		comp->Update(deltaTime);
+	}
+}
+
+void dae::GameObject::UpdateChildren()
+{
+	for (auto& child : m_pChildren)
+	{
+		child->SetPosition(m_Transform.GetPosition().x + child->m_Offset.x, m_Transform.GetPosition().x + child->m_Offset.y);
 	}
 }
 
@@ -91,6 +101,11 @@ void dae::GameObject::SetPosition(float x, float y)
 	m_Transform.SetPosition(x, y, 0.0f);
 }
 
+glm::vec3 dae::GameObject::GetPosition() const
+{
+	return (glm::vec3(m_Transform.GetPosition().x, m_Transform.GetPosition().y,0.0f));
+}
+
 void dae::GameObject::SetParent(GameObject* parent)
 {
 	m_pParent = parent;
@@ -120,6 +135,17 @@ void dae::GameObject::RemoveChild(int index)
 void dae::GameObject::AddChild(GameObject* go)
 {
 	m_pChildren.push_back(go);
+}
+
+void dae::GameObject::BecomeChild(GameObject* owner)
+{
+	m_Offset = m_Transform.GetPosition() - owner->GetPosition();
+	m_IsChild = true;
+}
+
+void dae::GameObject::StopChilding()
+{
+	m_IsChild = false;
 }
 
 void dae::GameObject::SetKill()
