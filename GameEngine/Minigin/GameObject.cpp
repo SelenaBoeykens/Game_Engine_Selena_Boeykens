@@ -44,6 +44,7 @@ void dae::GameObject::UpdateComponents(double deltaTime)
 		}
 	}
 	m_Messages.clear();
+
 	}
 	for (BaseComponent* comp : m_pComponents)
 	{
@@ -62,6 +63,7 @@ void dae::GameObject::AddComponent(ComponentType type)
 
 void dae::GameObject::AddComponent(BaseComponent* comp)
 {
+	comp->SetOwner(this);
 	m_pComponents.push_back(comp);
 }
 

@@ -21,9 +21,10 @@ namespace dae
 		ComponentType GetType() const;
 		void SendsMessage(Message message);
 		void ReceiveMessage(Message message);
+		void SetOwner(GameObject* owner);
 	protected:
 		ComponentType m_Type;
-		GameObject* m_Owner = nullptr;
+		GameObject* m_pOwner = nullptr;
 	};
 
 	struct Message

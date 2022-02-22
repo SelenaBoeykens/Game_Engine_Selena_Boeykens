@@ -31,12 +31,20 @@ ComponentType dae::BaseComponent::GetType() const
 
 void dae::BaseComponent::SendsMessage(Message message)
 {
-	m_Owner->AddMessage(message);
+	if (m_pOwner != nullptr)
+	{
+	m_pOwner->AddMessage(message);
+	}
 }
 
 void dae::BaseComponent::ReceiveMessage(Message message)
 {
 	//do stuff
+}
+
+void dae::BaseComponent::SetOwner(GameObject* owner)
+{
+	m_pOwner = owner;
 }
 
 
