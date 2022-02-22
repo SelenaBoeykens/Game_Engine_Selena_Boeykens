@@ -6,6 +6,7 @@
 #include "Texture2D.h"
 #include "Font.h"
 #include "ResourceManager.h"
+#include "GameObject.h"
 
 
 
@@ -26,6 +27,16 @@ void dae::BaseComponent::SetType(ComponentType type)
 ComponentType dae::BaseComponent::GetType() const
 {
 	return m_Type;
+}
+
+void dae::BaseComponent::SendsMessage(Message message)
+{
+	m_Owner->AddMessage(message);
+}
+
+void dae::BaseComponent::ReceiveMessage(Message message)
+{
+	//do stuff
 }
 
 

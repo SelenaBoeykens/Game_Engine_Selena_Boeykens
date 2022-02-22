@@ -22,6 +22,17 @@ void Scene::Update(double deltaTime)
 	for (auto& object : m_Objects)
 	{
 		object->Update(deltaTime);
+		if (object->GetNeedsKilling() == true)
+		{
+			objectsToDelete.push_back(object);
+		}
+	}
+	if (objectsToDelete.size() >=1)
+	{
+		for (auto& object : objectsToDelete)
+		{
+			delete(&object);
+		}
 	}
 }
 

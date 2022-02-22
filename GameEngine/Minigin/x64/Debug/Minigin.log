@@ -1,4 +1,8 @@
-﻿  TextObject.cpp
+﻿  Components.cpp
+  GameObject.cpp
+  Minigin.cpp
+  Scene.cpp
+  Generating Code...
   Minigin.vcxproj -> C:\Users\cubet\Desktop\DAEREDO\Prog4\Game_Engine_Selena_Boeykens\GameEngine\x64\Debug\Minigin.exe
   C:\Users\cubet\Desktop\DAEREDO\Prog4\Game_Engine_Selena_Boeykens\GameEngine\3rdParty\SDL2\lib\x64\SDL2.dll
   1 File(s) copied

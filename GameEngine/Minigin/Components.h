@@ -9,6 +9,8 @@ enum class ComponentType
 
 namespace dae
 {
+	class GameObject;
+	struct Message;
 	class BaseComponent
 	{
 	public:
@@ -17,9 +19,19 @@ namespace dae
 		virtual void Update(double deltaTime) = 0;
 		void SetType(ComponentType type);
 		ComponentType GetType() const;
+		void SendsMessage(Message message);
+		void ReceiveMessage(Message message);
 	protected:
 		ComponentType m_Type;
+		GameObject* m_Owner = nullptr;
 	};
+
+	struct Message
+	{
+		BaseComponent* Sender = nullptr;
+		std::string text;
+	};
+
 
 	class Font;
 	class Texture2D;
@@ -61,5 +73,7 @@ namespace dae
 		int m_NrFrames;
 		double m_TimePassed;
 	};
-
 }
+
+
+
