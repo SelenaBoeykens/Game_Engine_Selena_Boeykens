@@ -63,8 +63,7 @@ void dae::Minigin::LoadGame() const
 	RenderComponent* renderComp = new RenderComponent();
 	renderComp->SetTexture("background.jpg");
 	go->AddComponent(renderComp);
-	Message mes{ nullptr,"ren,kaas," };
-	go->AddMessage(mes);
+	go->AddMessage({ nullptr,"ren,fancybw.png," });
 	scene.Add(go);
 
 	go = std::make_shared<GameObject>();
@@ -80,6 +79,7 @@ void dae::Minigin::LoadGame() const
 	RenderComponent* renderCompFPS = new RenderComponent("0 FPS", font);
 	renderCompFPS->SetPosition(0, 0);
 	go->AddComponent(renderCompFPS);
+	
 	FPSComponent* fpsComp = new FPSComponent(renderCompFPS);
 	go->AddComponent(fpsComp);
 	scene.Add(go);

@@ -112,16 +112,25 @@ void dae::RenderComponent::ReceiveMessage(Message message)
 {
 	if (std::regex_match(message.text, std::regex("ren,.*")))
 	{
-		const std::string mes = "ren,kaas\n";
-		std::cout << "rendering message received!\n";
 		std::smatch match;
+		if (m_IsSetToText)
+		{
+			std::regex reg{ "ren,(.*)," };
+			if (std::regex_search(message.text.cbegin(), message.text.cend(), match, reg))
+			{
+				SetText(match[1]);
+			}
+		}
+		else
+		{
+		//std::cout << "rendering message received!\n";
+		
 		std::regex reg{ "ren,(.*)," };
 		if (std::regex_search(message.text.cbegin(), message.text.cend(), match, reg))
 		{
-			std::cout << match[1];
+			SetTexture(match[1]);
 		}
-		
-		
+		}
 	}
 }
 
