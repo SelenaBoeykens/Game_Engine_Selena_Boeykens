@@ -7,7 +7,7 @@
 #include "Font.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
-
+#include <regex>
 
 
 
@@ -37,10 +37,6 @@ void dae::BaseComponent::SendsMessage(Message message)
 	}
 }
 
-void dae::BaseComponent::ReceiveMessage(Message message)
-{
-	//do stuff
-}
 
 void dae::BaseComponent::SetOwner(GameObject* owner)
 {
@@ -112,6 +108,23 @@ void dae::RenderComponent::SetPosition(const float x, const float y)
 	m_Transform.SetPosition(x, y, 0.0f);
 }
 
+void dae::RenderComponent::ReceiveMessage(Message message)
+{
+	if (std::regex_match(message.text, std::regex("ren,.*")))
+	{
+		const std::string mes = "ren,kaas\n";
+		std::cout << "rendering message received!\n";
+		std::smatch match;
+		std::regex reg{ "ren,(.*)," };
+		if (std::regex_search(message.text.cbegin(), message.text.cend(), match, reg))
+		{
+			std::cout << match[1];
+		}
+		
+		
+	}
+}
+
 dae::FPSComponent::FPSComponent(RenderComponent* renderComponent) :BaseComponent(ComponentType::fps)
 , m_RenderComponent{ renderComponent }
 , m_TimePassed{}
@@ -131,4 +144,8 @@ void dae::FPSComponent::Update(double deltaTime)
 		m_NrFrames = 0;
 	}
 
+}
+
+void dae::FPSComponent::ReceiveMessage(Message message)
+{
 }

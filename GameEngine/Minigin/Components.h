@@ -20,7 +20,7 @@ namespace dae
 		void SetType(ComponentType type);
 		ComponentType GetType() const;
 		void SendsMessage(Message message);
-		void ReceiveMessage(Message message);
+		virtual void ReceiveMessage(Message message) =0;
 		void SetOwner(GameObject* owner);
 	protected:
 		ComponentType m_Type;
@@ -46,6 +46,8 @@ namespace dae
 		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
 
+		void ReceiveMessage(Message message);
+
 		RenderComponent();
 		RenderComponent(const std::string& text, const std::shared_ptr<Font>& font);
 		~RenderComponent() override;
@@ -69,6 +71,7 @@ namespace dae
 	public:
 		FPSComponent(RenderComponent* renderComponent);
 		void Update(double deltaTime) override;
+		void ReceiveMessage(Message message);
 	private:
 		RenderComponent* m_RenderComponent;
 		int m_NrFrames;

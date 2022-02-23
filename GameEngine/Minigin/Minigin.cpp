@@ -63,6 +63,8 @@ void dae::Minigin::LoadGame() const
 	RenderComponent* renderComp = new RenderComponent();
 	renderComp->SetTexture("background.jpg");
 	go->AddComponent(renderComp);
+	Message mes{ nullptr,"ren,kaas," };
+	go->AddMessage(mes);
 	scene.Add(go);
 
 	go = std::make_shared<GameObject>();
