@@ -17,20 +17,21 @@ void Scene::Add(const std::shared_ptr<GameObject>&object)
 
 void Scene::Update(double deltaTime)
 {
-	std::vector<std::shared_ptr<GameObject>> objectsToDelete; //add a way to delete objects, needs to delete everything
-
+	m_pObjectsToDelete.clear();
 	for (auto& object : m_Objects)
 	{
 		object->Update(deltaTime);
 		if (object->GetNeedsKilling() == true)
 		{
-			objectsToDelete.push_back(object);
+			m_pObjectsToDelete.push_back(object);
 		}
 	}
-	if (objectsToDelete.size() >=1)
+	if (m_pObjectsToDelete.size() >=1)
 	{
-		for (auto& object : objectsToDelete)
+		for (auto& object : m_pObjectsToDelete)
 		{
+			//remove object from vector
+			m_Objects.erase(std::find(m_Objects.begin(),m_Objects.end(),object));
 			delete(&object);
 		}
 	}

@@ -11,8 +11,9 @@
 
 
 
-dae::BaseComponent::BaseComponent(ComponentType type) : m_Type{ type }
+dae::BaseComponent::BaseComponent(ComponentType type, GameObject* owner) : m_Type{ type }, m_pOwner{owner}
 {
+	owner->AddComponent(this);
 }
 
 dae::BaseComponent::~BaseComponent()
@@ -29,7 +30,7 @@ ComponentType dae::BaseComponent::GetType() const
 	return m_Type;
 }
 
-void dae::BaseComponent::SendsMessage(Message message)
+void dae::BaseComponent::SendsMessage(const Message& message)
 {
 	if (m_pOwner != nullptr)
 	{
@@ -44,13 +45,13 @@ void dae::BaseComponent::SetOwner(GameObject* owner)
 }
 
 
-dae::RenderComponent::RenderComponent()
-	:BaseComponent{ ComponentType::render }, m_NeedsUpdate(false), m_Text(""), m_Texture(nullptr), m_IsSetToText(false)
+dae::RenderComponent::RenderComponent(GameObject* owner)
+	:BaseComponent{ ComponentType::render,owner }, m_NeedsUpdate(false), m_Text(""), m_Texture(nullptr), m_IsSetToText(false)
 {
 }
 
-dae::RenderComponent::RenderComponent(const std::string& text, const std::shared_ptr<Font>& font)
-	: BaseComponent{ ComponentType::render }, m_NeedsUpdate(true), m_Text(text), m_Font(font), m_Texture(nullptr), m_IsSetToText(true)
+dae::RenderComponent::RenderComponent(const std::string& text, const std::shared_ptr<Font>& font, GameObject* owner)
+	: BaseComponent{ ComponentType::render, owner }, m_NeedsUpdate(true), m_Text(text), m_Font(font), m_Texture(nullptr), m_IsSetToText(true)
 {
 }
 
@@ -108,7 +109,7 @@ void dae::RenderComponent::SetPosition(const float x, const float y)
 	m_Transform.SetPosition(x, y, 0.0f);
 }
 
-void dae::RenderComponent::ReceiveMessage(Message message)
+void dae::RenderComponent::ReceiveMessage(const Message& message)
 {
 	if (std::regex_match(message.text, std::regex("ren,.*")))
 	{
@@ -134,7 +135,7 @@ void dae::RenderComponent::ReceiveMessage(Message message)
 	}
 }
 
-dae::FPSComponent::FPSComponent(RenderComponent* renderComponent) :BaseComponent(ComponentType::fps)
+dae::FPSComponent::FPSComponent(RenderComponent* renderComponent, GameObject* owner) :BaseComponent(ComponentType::fps,owner)
 , m_RenderComponent{ renderComponent }
 , m_TimePassed{}
 , m_NrFrames{}
@@ -155,6 +156,7 @@ void dae::FPSComponent::Update(double deltaTime)
 
 }
 
-void dae::FPSComponent::ReceiveMessage(Message message)
+void dae::FPSComponent::ReceiveMessage(const Message& message)
 {
+	message; //bad for now 
 }

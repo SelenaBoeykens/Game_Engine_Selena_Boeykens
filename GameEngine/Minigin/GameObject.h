@@ -34,7 +34,7 @@ namespace dae
 		void SetKill();
 		bool GetNeedsKilling() const;
 
-		void AddMessage(Message mes);
+		void AddMessage(const Message& mes);
 
 
 		GameObject();

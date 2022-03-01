@@ -10,6 +10,7 @@
 #include "GameObject.h"
 #include "Scene.h"
 
+
 using namespace std;
 using namespace std::chrono;
 
@@ -49,6 +50,8 @@ void dae::Minigin::Initialize()
 	}
 
 	Renderer::GetInstance().Init(m_Window);
+
+	
 }
 
 /**
@@ -60,28 +63,24 @@ void dae::Minigin::LoadGame() const
 
 	auto go = std::make_shared<GameObject>();
 	//go->AddComponent(ComponentType::render);
-	RenderComponent* renderComp = new RenderComponent();
+	RenderComponent* renderComp = new RenderComponent(go.get() );
 	renderComp->SetTexture("background.jpg");
-	go->AddComponent(renderComp);
-	//go->AddMessage({ nullptr,"ren,fancybw.png" });
+	go->AddMessage({ nullptr,"ren,fancybw.png" });
 	scene.Add(go);
 
 	go = std::make_shared<GameObject>();
-	RenderComponent* renderComp2 = new RenderComponent();
+	RenderComponent* renderComp2 = new RenderComponent(go.get());
 	renderComp2->SetTexture("logo.png");
 	renderComp2->SetPosition(216, 180);
-	go->AddComponent(renderComp2);
 	scene.Add(go);
 
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 
 	go = std::make_shared<GameObject>();
-	RenderComponent* renderCompFPS = new RenderComponent("0 FPS", font);
+	RenderComponent* renderCompFPS = new RenderComponent("0 FPS", font, go.get());
 	renderCompFPS->SetPosition(0, 0);
-	go->AddComponent(renderCompFPS);
 	
-	FPSComponent* fpsComp = new FPSComponent(renderCompFPS);
-	go->AddComponent(fpsComp);
+	new FPSComponent(renderCompFPS, go.get());
 	scene.Add(go);
 }
 
@@ -112,9 +111,6 @@ void dae::Minigin::Run()
 		bool doContinue = true;
 		while (doContinue)
 		{
-			/*doContinue = input.ProcessInput();
-			sceneManager.Update();
-			renderer.Render();*/
 			while (doContinue)
 			{
 				auto currentTime = high_resolution_clock::now();

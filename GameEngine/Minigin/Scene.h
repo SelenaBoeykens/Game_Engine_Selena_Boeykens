@@ -27,6 +27,8 @@ namespace dae
 		std::vector < std::shared_ptr<dae::GameObject>> m_Objects{};
 
 		static unsigned int m_IdCounter;
+
+		std::vector<std::shared_ptr<GameObject>> m_pObjectsToDelete; //add a way to delete objects, needs to delete everything
 	};
 
 }

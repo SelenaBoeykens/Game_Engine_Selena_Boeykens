@@ -64,10 +64,22 @@ void dae::GameObject::UpdateChildren()
 
 void dae::GameObject::AddComponent(ComponentType type)
 {
+	bool duplicate = false;
+	for (int i = 0; i < m_pComponents.size(); i++)
+	{
+		if (m_pComponents[i]->GetType() == type)
+		{
+			duplicate = true;
+			break;
+		}
+	}
+	if (!duplicate)
+	{
+
 	if (type == ComponentType::render)
 	{
-		m_pComponents.push_back(new RenderComponent());
-
+		m_pComponents.push_back(new RenderComponent(this));
+	}
 	}
 }
 
@@ -135,6 +147,7 @@ void dae::GameObject::RemoveChild(int index)
 void dae::GameObject::AddChild(GameObject* go)
 {
 	m_pChildren.push_back(go);
+	go->BecomeChild(this);
 }
 
 void dae::GameObject::BecomeChild(GameObject* owner)
@@ -158,7 +171,7 @@ bool dae::GameObject::GetNeedsKilling() const
 	return m_NeedsKilling;
 }
 
-void dae::GameObject::AddMessage(Message mes)
+void dae::GameObject::AddMessage(const Message& mes)
 {
 	m_Messages.push_back(mes);
 }

@@ -14,13 +14,13 @@ namespace dae
 	class BaseComponent
 	{
 	public:
-		BaseComponent(ComponentType type);
+		BaseComponent(ComponentType type, GameObject* owner); //moet ook gameobject meegeven wordennn!!
 		virtual ~BaseComponent() = 0;
 		virtual void Update(double deltaTime) = 0;
 		void SetType(ComponentType type);
 		ComponentType GetType() const;
-		void SendsMessage(Message message);
-		virtual void ReceiveMessage(Message message) =0;
+		void SendsMessage(const Message& message);
+		virtual void ReceiveMessage(const Message& message) =0;
 		void SetOwner(GameObject* owner);
 	protected:
 		ComponentType m_Type;
@@ -30,6 +30,7 @@ namespace dae
 	struct Message
 	{
 		BaseComponent* Sender = nullptr;
+		//type
 		std::string text;
 	};
 
@@ -46,10 +47,10 @@ namespace dae
 		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
 
-		void ReceiveMessage(Message message);
+		void ReceiveMessage(const Message& message);
 
-		RenderComponent();
-		RenderComponent(const std::string& text, const std::shared_ptr<Font>& font);
+		RenderComponent(GameObject* owner);
+		RenderComponent(const std::string& text, const std::shared_ptr<Font>& font, GameObject* owner);
 		~RenderComponent() override;
 
 		RenderComponent(const RenderComponent& other) = delete;
@@ -69,9 +70,9 @@ namespace dae
 	class FPSComponent : public BaseComponent
 	{
 	public:
-		FPSComponent(RenderComponent* renderComponent);
+		FPSComponent(RenderComponent* renderComponent, GameObject* owner);
 		void Update(double deltaTime) override;
-		void ReceiveMessage(Message message);
+		void ReceiveMessage(const Message& message);
 	private:
 		RenderComponent* m_RenderComponent;
 		int m_NrFrames;
